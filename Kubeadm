@@ -1,0 +1,18 @@
+#K8's setup bu Kubeadm
+#Master and Workert
+
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl
+sudo apt install docker.io -y
+sudo systemctl start docker
+sudo systemctl enable  docker
+curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+
+#Master
+kubectl apply -f https://github.com/weaveworks/weave/releases/download/v2.8.1/weave-daemonset-k8s.yaml
+kubeadm token create --print-join-command --v=5
+kubectl get nodes
